@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoC.Deploy", "PoC.Deploy\PoC.Deploy.csproj", "{6B20995B-4C22-4463-AE8A-C86FDE1A1485}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoC.Deploy.UnitTests", "PoC.Deploy.UnitTests\PoC.Deploy.UnitTests.csproj", "{1213014F-6700-41A6-B19A-E95AA626AE64}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{F746752B-01B5-45FD-8C75-056DB30F2F4A}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipeline-build.yml = azure-pipeline-build.yml
+		pipeline.yml = pipeline.yml
+		azure-pipeline-steps-deploy.yml = azure-pipeline-steps-deploy.yml
+		deploy-stage.yaml = deploy-stage.yaml
+		build-stage.yaml = build-stage.yaml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B20995B-4C22-4463-AE8A-C86FDE1A1485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B20995B-4C22-4463-AE8A-C86FDE1A1485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B20995B-4C22-4463-AE8A-C86FDE1A1485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B20995B-4C22-4463-AE8A-C86FDE1A1485}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1213014F-6700-41A6-B19A-E95AA626AE64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1213014F-6700-41A6-B19A-E95AA626AE64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1213014F-6700-41A6-B19A-E95AA626AE64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1213014F-6700-41A6-B19A-E95AA626AE64}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DCC08126-98B1-4475-ADA7-AA8FBBA6E74A}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,30 @@
+stages:
+- stage: Deploy
+  displayName: 'Deploy Staging'
+  dependsOn: Build
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  jobs:
+  - job: Deploy
+    displayName: 'Deploy Job'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+
+    # Manual approval step for the deployment to staging
+    - task: ManualValidation@0
+      displayName: 'Pre-Deployment Approval'
+      inputs:
+        instructions: 'Please approve the deployment to staging'
+        onTimeout: 'reject'
+        timeout: '1h'
+        notifyUsers: 
+        - 'your-approval-email@yopmail.com'
+    
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy to Azure'
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: '$(azureSubs)'
+        appType: 'webApp'
+        WebAppName: 'poc-deploy'
+        packageForLinux: '$(Pipeline.Workspace)/drop/*.zip'

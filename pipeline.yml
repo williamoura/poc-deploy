@@ -1,0 +1,19 @@
+trigger:
+- master
+
+pr:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  vstsFeedPath: $(VSTS_FEED)
+  azureSubs: $(AZURE_SUBS)
+
+stages:
+- template: templates/build-stage.yaml
+- template: templates/deploy-stage.yaml

@@ -1,0 +1,65 @@
+stages:
+- stage: Build
+  displayName: 'Build Stage'
+  jobs:
+  - job: Build
+    displayName: 'Build Job'
+    steps:
+    - task: NuGetToolInstaller@1
+      displayName: 'Install NuGet'
+      # Install the specified version of NuGet (if not already installed)
+
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core sdk 8.0.x'
+      inputs:
+        version: 8.0.x
+      # Use .NET Core SDK 8.0.x or higher
+
+    - task: NuGetCommand@2
+      displayName: 'Restore NuGet Packages'
+      inputs:
+        command: 'restore'
+        restoreSolution: '$(solution)'
+        feedsToUse: 'select'
+        vstsFeed: '$(vstsFeedPath)'
+      # Restore NuGet packages for the solution using the specified feed
+
+    - task: VSBuild@1
+      displayName: 'Build Solution'
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+      # Build the solution using MSBuild with specific arguments for packaging
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Run Unit Tests'
+      inputs:
+        command: 'test'
+        projects: '**/*Tests.csproj'
+        arguments: '--no-build --configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
+      # Run unit tests for the project and collect code coverage in Cobertura format without building
+
+    - task: PublishCodeCoverageResults@2
+      displayName: 'Publish Code Coverage Results'
+      inputs:  
+        summaryFileLocation: '$(Agent.TempDirectory)/**/*.cobertura.xml'
+        failIfCoverageEmpty: true
+      # Publish code coverage results using the Cobertura format and fail if no coverage results are found
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Build Artifacts'
+      inputs:
+        PathtoPublish: '$(build.artifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+      # Publish the build artifacts to the specified location
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files into a .zip'
+      inputs:
+        rootFolderOrFile: '$(build.artifactStagingDirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(build.artifactStagingDirectory)/$(Build.BuildId).zip'
